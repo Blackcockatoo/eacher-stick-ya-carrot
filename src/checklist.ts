@@ -14,17 +14,17 @@ const defaultGroups: ChecklistGroup[] = [
     title: 'Readiness',
     tasks: [
       { id: 1, text: 'Safe hands & feet', points: 2 },
-      { id: 2, text: 'Ask for help', points: 2 }
-    ]
+      { id: 2, text: 'Ask for help', points: 2 },
+    ],
   },
   {
     title: 'Self‑management',
     tasks: [
       { id: 3, text: 'Try the steps', points: 2 },
       { id: 4, text: 'Take breaks', points: 1 },
-      { id: 5, text: 'Fix mistakes', points: 1 }
-    ]
-  }
+      { id: 5, text: 'Fix mistakes', points: 1 },
+    ],
+  },
 ]
 
 interface StoredTask {
@@ -46,7 +46,9 @@ function loadTaskState(): Record<number, StoredTask> {
 function saveTaskState(state: Record<number, StoredTask>) {
   try {
     localStorage.setItem(TASKS_KEY, JSON.stringify(state))
-  } catch {}
+  } catch {
+    /* noop */
+  }
 }
 
 function loadNotes(): string {
@@ -60,7 +62,9 @@ function loadNotes(): string {
 function saveNotes(text: string) {
   try {
     localStorage.setItem(NOTES_KEY, text)
-  } catch {}
+  } catch {
+    /* noop */
+  }
 }
 
 function download(filename: string, text: string) {
@@ -82,11 +86,14 @@ function exportCSV(groups: ChecklistGroup[], state: Record<number, StoredTask>, 
         s?.completed ? 'yes' : 'no',
         s?.completedAt ?? '',
         t.points,
-        note.replace(/\n/g, ' ')
+        note.replace(/\n/g, ' '),
       ]
-    })
+    }),
   )
-  const csv = [header, ...rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','))].join('\n')
+  const csv = [
+    header,
+    ...rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')),
+  ].join('\n')
   download('checklist.csv', csv)
 }
 
@@ -177,7 +184,9 @@ export function renderChecklist(container: HTMLElement, groups: ChecklistGroup[]
       checkbox.checked = !!state[t.id]?.completed
       checkbox.addEventListener('change', () => {
         const now = new Date().toISOString()
-        state[t.id] = checkbox.checked ? { completed: true, completedAt: now } : { completed: false }
+        state[t.id] = checkbox.checked
+          ? { completed: true, completedAt: now }
+          : { completed: false }
         saveTaskState(state)
       })
 
@@ -207,7 +216,8 @@ export function renderChecklist(container: HTMLElement, groups: ChecklistGroup[]
   menu.appendChild(summary)
 
   const menuList = document.createElement('div')
-  menuList.className = 'absolute right-0 mt-2 w-44 rounded-md border border-gray-200 bg-white shadow'
+  menuList.className =
+    'absolute right-0 mt-2 w-44 rounded-md border border-gray-200 bg-white shadow'
 
   const exportHtmlBtn = document.createElement('button')
   exportHtmlBtn.textContent = 'Export HTML'

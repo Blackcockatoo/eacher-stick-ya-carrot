@@ -1,5 +1,5 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npm run lint
-npm run format
+# Husky v9+ plain shell hook (no _/husky.sh)
+npm run lint --if-present
+npm run typecheck --if-present
+npm run format:write --if-present

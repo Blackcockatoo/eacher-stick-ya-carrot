@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "vite",
     "build": "tsc --noEmit",
-    "lint": "eslint . --ext .ts,.tsx",
-    "format": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "test": "echo \"No tests yet\""
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.0",
@@ -17,6 +21,7 @@
     "eslint-config-prettier": "^9.0.0",
     "husky": "^9.1.7",
     "prettier": "^3.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
   }
 }
