@@ -1,2 +1,1 @@
-// Placeholder entry until app code is added.
-export const placeholder = true
+export { setupStickyCarrotFeature } from './stickyCarrotFeature';
